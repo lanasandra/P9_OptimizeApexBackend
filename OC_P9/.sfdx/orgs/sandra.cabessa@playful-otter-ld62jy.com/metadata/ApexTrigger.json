@@ -1,0 +1,16 @@
+{
+  "status": 0,
+  "result": {
+    "createdById": "0052X00000AGgXJQA1",
+    "createdByName": "Sandra Cabessa",
+    "createdDate": "2020-07-26T13:44:45.000Z",
+    "fileName": "triggers/OrderTrigger.trigger",
+    "fullName": "OrderTrigger",
+    "id": "01q2X000000gbeKQAQ",
+    "lastModifiedById": "0052X00000AGgXJQA1",
+    "lastModifiedByName": "Sandra Cabessa",
+    "lastModifiedDate": "2020-08-11T17:01:47.000Z",
+    "manageableState": "unmanaged",
+    "type": "ApexTrigger"
+  }
+}
