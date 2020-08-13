@@ -2,12 +2,12 @@
 public class TestDataFactory {
     
     public static Account createAccount(String name) {
-        Account a = new Account();
-        a.Name=name;
+        Account a = new Account( Name=name);
         insert a;
         return a;
     }
-   
+    
+    
     public static Contract createContract(Id accountId) {
         Contract c = New Contract(Name = 'ContractTest', AccountId= accountId, StartDate= System.today(), ContractTerm=24, Status='Draft');
         insert c;
@@ -37,6 +37,26 @@ public class TestDataFactory {
         return pbEntry;
         
      }
+    
+    public static User createUser(String lastName) {
+        User user = new User(
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'Custom: Sales Profile'].Id,
+     		LastName = lastName,
+     		Email = 'puser000@test.com',
+     		Username = 'puser000@fasha.com' + System.currentTimeMillis(),
+     		CompanyName = 'Fasha',
+            IsActive=true,
+            Title = 'title',
+     		Alias = 'alias',
+     		TimeZoneSidKey = 'America/Los_Angeles',
+     		EmailEncodingKey = 'UTF-8',
+     		LanguageLocaleKey = 'en_US',
+     		LocaleSidKey = 'en_US',
+     		UserRoleId = [Select Id FROM UserRole WHERE Name ='VP, International Sales'].Id
+        	);
+        insert user;
+        return user;
+    }
            
    public static Order createOrder(Id accountId, Id contractId){
          
@@ -51,8 +71,8 @@ public class TestDataFactory {
         insert order;
         return order;
     	      
-    }     
-    
+    }
+      
      public static OrderItem createOrderItem(Id orderId, Id productId, Double quantity, Decimal unitPrice, Id pbEntryId) {
         OrderItem orderItem = new OrderItem(
         OrderId=orderId,
@@ -74,16 +94,18 @@ public class TestDataFactory {
         Product2 product = TestDataFactory.createProduct();
         PricebookEntry pbEntry = TestDataFactory.createPricebookEntry(product.Id, 1000);
         
+        // Create the list of orders 
         for(Integer i=0; i<numberOfOrders; i++) {
             Order order = TestDataFactory.createOrder(a.Id, c.Id);
             orderList.add(order);
         }
-                       
+        // Create the orderItems for each order               
         for(Integer i=0; i<numberOfOrders; i++) {
             for(Order order : orderList) {
             OrderItem orderItem = TestDataFactory.createOrderItem(order.Id, product.Id, 4, 1000, pbEntry.Id);
             }
-           
+         
+                
        update orderList;
         }
         return orderList;
@@ -108,5 +130,33 @@ public class TestDataFactory {
          
       
 }
+    
+     public static List<Order> createOrderWithDedicatedOwnerId(Integer numberOfOrders) {
+        List<Order> orderList = new List<Order>();
+       
+        // Create the account, contract, product and PricebookEntry and an User needed for the order
+        Account a = TestDataFactory.createAccount('Test Account');
+        Contract c = TestDataFactory.createContract(a.Id);
+        Product2 product = TestDataFactory.createProduct();
+        PricebookEntry pbEntry = TestDataFactory.createPricebookEntry(product.Id, 1000);
+  		
+        
+        for(Integer i=0; i<numberOfOrders; i++) {
+            Order order = TestDataFactory.createOrder(a.Id, c.Id);
+            orderList.add(order);
+        }
+                
+        // Create the orderItems for each order               
+        for(Integer i=0; i<numberOfOrders; i++) {
+            for(Order order : orderList) {
+            OrderItem orderItem = TestDataFactory.createOrderItem(order.Id, product.Id, 4, 1000, pbEntry.Id);
+            }
+            
+        }
+        
+        update orderList;
+		return orderList;      
+               
+    }
     
 }

@@ -1,0 +1,23 @@
+<aura:component implements="force:appHostable,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="MyTeamOrdersController" >
+    <!-- attributes-->
+    <aura:attribute name="data" type="Order"/> 
+    <aura:attribute name="sales" type="List"/>
+    
+    <!-- handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+    <lightning:card title="My Team orders" iconName="standard:orders">
+        <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-text-heading_medium">
+                <aura:iteration items="{!v.sales}" var="sales" indexVar="key">
+                    <div class="slds-region_narrow" style="width:650px">
+                        <dl class="slds-dl_horizontal">
+                            <dt class="slds-dl_horizontal__label">{!sales.key}:</dt>
+                            <dd class="slds-dl_horizontal__detail"><lightning:formattedNumber value="{!sales.value}" style="currency" currencyCode="EUR"/></dd>
+                        </dl>
+                    </div>
+                </aura:iteration>                         
+            </div>
+        </div>
+    </lightning:card>
+</aura:component>
